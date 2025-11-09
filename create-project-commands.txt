@@ -1,0 +1,15 @@
+Install latest node-js version (https://nodesource.com/blog/Update-Node.js-versions-on-linux):
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+Initialize Angular project:
+npm init @angular myApplicationApp
+
+
+New attempt (https://angular.dev/installation)
+- sudo npm install -g @angular/cli
+
+
+ng new myApplicationApp
+npm install bootstrap@latest
+npm i bootstrap-icons

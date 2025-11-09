@@ -1,0 +1,34 @@
+ # Initialize Angular project choices
+
+
+ When to use CSR:
+
+✅ It can be a good fit for:
+
+    Interactive applications (dashboards, admin panels)
+    Real-time applications
+    Internal tools where SEO doesn't matter
+    Single-page applications with complex client-side state
+
+
+Logo source: https://equalengineers.com/case-study/hci-edinburgh-southeast-scotland-pathways-programme/dummy-logo-5b/
+
+video: https://www.youtube.com/watch?v=gdq7ns8BU3Y
+
+
+ng serve
+
+https://angular.dev/essentials
+
+
+Backend (django) and frontend (Angular) setup:
+https://python.plainenglish.io/building-your-first-full-stack-application-with-django-and-angular-18-a-beginners-guide-2f7919fdbc2e
+
+
+pip install spectrum_utils
+pip install casanovo
+
+
+npm install @swimlane/ngx-charts
+
+ng generate environments

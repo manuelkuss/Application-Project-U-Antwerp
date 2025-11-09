@@ -1,0 +1,15 @@
+<div class="container">
+  <h1>Notes</h1>
+
+  <form (submit)="add(title.value, content.value); title.value=''; content.value=''; $event.preventDefault()">
+    <input #title placeholder="Title" required>
+    <textarea #content placeholder="Content" required></textarea>
+    <button type="submit">Add Note</button>
+  </form>
+
+  <ul>
+    <li *ngFor="let note of notes">
+      <strong>{{ note.title }}</strong>: {{ note.content }}
+    </li>
+  </ul>
+</div>
