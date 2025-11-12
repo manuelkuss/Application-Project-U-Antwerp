@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Charts } from './charts';
+import { ChartsNxt } from './charts-nxt';
 
-describe('Charts', () => {
-  let component: Charts;
-  let fixture: ComponentFixture<Charts>;
+describe('ChartsNxt', () => {
+  let component: ChartsNxt;
+  let fixture: ComponentFixture<ChartsNxt>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Charts]
+      imports: [ChartsNxt]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Charts);
+    fixture = TestBed.createComponent(ChartsNxt);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

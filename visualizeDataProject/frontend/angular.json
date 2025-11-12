@@ -40,7 +40,8 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/plotly.js-dist-min/plotly.min.js"
             ]
           },
           "configurations": {

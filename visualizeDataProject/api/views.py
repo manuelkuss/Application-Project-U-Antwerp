@@ -1,15 +1,9 @@
-import json
-
-from django.shortcuts import render
-from pyteomics import mgf
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Note
 from .serializers import NoteSerializer
-import spectrum_utils.spectrum as sus
-
-# from dataProcessing import *
+from .utils.dataProcessing import read_mgf_file_and_return_first_n_spectra
 
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.all()
@@ -18,52 +12,6 @@ class NoteViewSet(viewsets.ModelViewSet):
 class ChartDataView(APIView):
     def get(self, request):
 
-        data = read_mgf_file_and_return_first_spectrum()
-
-        # data = {
-        #     "labels": ["January", "February", "March", "April"],
-        #     "values": [10, 20, 15, 30],
-        #     "metadata": {
-        #         "generated_by": "ChartDataView",
-        #         "status": "success"
-        #     }
-        # }
+        data = read_mgf_file_and_return_first_n_spectra(3)
 
         return Response(data)
-
-def read_mgf_file_and_return_first_spectrum():
-    mgf_file_path = "../resources/sample_preprocessed_spectra.mgf"
-
-    spectra = []
-    with mgf.read(mgf_file_path) as reader:
-        for i, spec in enumerate(reader, start=1):
-            mz = spec["m/z array"]  # numpy array of fragment m/z
-            inten = spec["intensity array"]  # numpy array of fragment intensities
-            meta = spec["params"]  # dict of spectrum-level metadata
-
-            title = meta.get("title")
-            pepmass = meta.get("pepmass")  # (precursor_mz, intensity?) or float
-            charge = meta.get("charge")
-            rt = meta.get("rtinseconds")
-
-            su_spec = sus.MsmsSpectrum(
-                identifier=title,
-                precursor_mz=spec["params"]["pepmass"][0],
-                precursor_charge=spec["params"].get("charge", [None])[0],
-                mz=spec["m/z array"],
-                intensity=spec["intensity array"],
-            )
-
-            spectra.append({"spectrum": su_spec})
-
-    # spectra_df = pd.DataFrame(spectra)
-    first_spectrum = spectra[0]["spectrum"]
-    first_spectrum_data = {
-        "title": "testChart",
-        "mz": first_spectrum.mz.tolist(),
-        "intensity": first_spectrum.intensity.tolist()
-    }
-
-    chartData = [first_spectrum_data]
-
-    return chartData

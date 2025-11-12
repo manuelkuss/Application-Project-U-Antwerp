@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <h1>Notes</h1>
 
   <form (submit)="add(title.value, content.value); title.value=''; content.value=''; $event.preventDefault()">
@@ -12,4 +12,34 @@
       <strong>{{ note.title }}</strong>: {{ note.content }}
     </li>
   </ul>
+</div> -->
+
+
+<div class="container my-4">
+  <h1 class="mb-4 text-center">Notes</h1>
+
+  <!-- Note Form -->
+  <form class="mb-4" (submit)="add(title.value, content.value); title.value=''; content.value=''; $event.preventDefault()">
+    <div class="mb-3">
+      <label for="titleInput" class="form-label">Title</label>
+      <input id="titleInput" #title class="form-control" placeholder="Enter note title" required>
+    </div>
+    <div class="mb-3">
+      <label for="contentInput" class="form-label">Content</label>
+      <textarea id="contentInput" #content class="form-control" rows="3" placeholder="Enter note content" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-secondary">Add Note</button>
+  </form>
+
+  <!-- Notes List -->
+  <div class="row">
+    <div *ngFor="let note of notes" class="col-md-6 col-lg-4 mb-3">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ note.title }}</h5>
+          <p class="card-text">{{ note.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

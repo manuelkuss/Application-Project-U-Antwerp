@@ -1,13 +1,10 @@
-import re
-
-import pandas as pd
-from pyteomics import mgf
-import matplotlib.pyplot as plt
-import spectrum_utils.plot as sup
+import json
 import spectrum_utils.spectrum as sus
+from django.shortcuts import render
+from pyteomics import mgf
 
-def read_mgf_file_and_return_first_spectrum():
-    mgf_file_path = "../../resources/sample_preprocessed_spectra.mgf"
+def read_mgf_file_and_return_first_n_spectra(n: int):
+    mgf_file_path = "../resources/sample_preprocessed_spectra.mgf"
 
     spectra = []
     with mgf.read(mgf_file_path) as reader:
@@ -32,12 +29,15 @@ def read_mgf_file_and_return_first_spectrum():
             spectra.append({"spectrum": su_spec})
 
     # spectra_df = pd.DataFrame(spectra)
-    first_spectrum = spectra[0]["spectrum"]
-    first_spectrum_data = {
-        "mz": first_spectrum.mz,
-        "intensity": first_spectrum.intensity
-    }
+    response_spectra = []
+    for i in range(n):
+        s = spectra[i]["spectrum"]
+        response_spectra.append({
+            "title": "chart_" + str(i),
+            "mz": s.mz.tolist(),
+            "intensity": s.intensity.tolist()
+        })
 
-    return first_spectrum_data
+    chartData = response_spectra
 
-read_mgf_file_and_return_first_spectrum()
+    return chartData
