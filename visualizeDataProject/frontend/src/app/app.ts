@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { Notes } from './notes/notes';
 import { Header } from './header/header';
 
 // NoteService depends on HttpClient
@@ -9,7 +8,7 @@ import { Header } from './header/header';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Notes, HttpClientModule],
+  imports: [RouterOutlet, Header, HttpClientModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

@@ -1,38 +1,13 @@
-import json
+import re
 
-from django.shortcuts import render
+import pandas as pd
 from pyteomics import mgf
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from .models import Note
-from .serializers import NoteSerializer
+import matplotlib.pyplot as plt
+import spectrum_utils.plot as sup
 import spectrum_utils.spectrum as sus
 
-# from dataProcessing import *
-
-class NoteViewSet(viewsets.ModelViewSet):
-    queryset = Note.objects.all()
-    serializer_class = NoteSerializer
-
-class ChartDataView(APIView):
-    def get(self, request):
-
-        data = read_mgf_file_and_return_first_spectrum()
-
-        # data = {
-        #     "labels": ["January", "February", "March", "April"],
-        #     "values": [10, 20, 15, 30],
-        #     "metadata": {
-        #         "generated_by": "ChartDataView",
-        #         "status": "success"
-        #     }
-        # }
-
-        return Response(data)
-
 def read_mgf_file_and_return_first_spectrum():
-    mgf_file_path = "../resources/sample_preprocessed_spectra.mgf"
+    mgf_file_path = "../../resources/sample_preprocessed_spectra.mgf"
 
     spectra = []
     with mgf.read(mgf_file_path) as reader:
@@ -59,11 +34,10 @@ def read_mgf_file_and_return_first_spectrum():
     # spectra_df = pd.DataFrame(spectra)
     first_spectrum = spectra[0]["spectrum"]
     first_spectrum_data = {
-        "title": "testChart",
-        "mz": first_spectrum.mz.tolist(),
-        "intensity": first_spectrum.intensity.tolist()
+        "mz": first_spectrum.mz,
+        "intensity": first_spectrum.intensity
     }
 
-    chartData = [first_spectrum_data]
+    return first_spectrum_data
 
-    return chartData
+read_mgf_file_and_return_first_spectrum()

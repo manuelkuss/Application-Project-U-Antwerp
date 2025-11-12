@@ -1,0 +1,29 @@
+<div class="container">
+    <h1>NGX Charts</h1>
+
+    <div *ngFor="let chart of chartData">
+        <h2>{{ chart.name }}</h2>
+
+        <div class="chart-box">
+            <ngx-charts-line-chart
+                [results]="[chart]"
+                [xAxis]="true"
+                [yAxis]="true"
+                [showGridLines]="true"
+                [showXAxisLabel]="true"
+                [showYAxisLabel]="true"
+                [xAxisLabel]="'m/z'"
+                [yAxisLabel]="'Intensity'"
+                [autoScale]="true"
+                [timeline]="false">
+            </ngx-charts-line-chart>
+
+        </div>
+
+    <!-- <h1>Plotly Charts</h1>
+
+    <plotly-plot [data]="graph.data" [layout]="graph.layout"></plotly-plot>
+    <plotly-plot [data]="graph.data" [layout]="graph.layout" [config]="graph.config"></plotly-plot> -->
+
+
+</div>

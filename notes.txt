@@ -32,3 +32,10 @@ pip install casanovo
 npm install @swimlane/ngx-charts
 
 ng generate environments
+
+
+TODO: Try this out: https://mattermost.com/blog/user-authentication-setting-up-angular-frontend/
+
+
+npm install plotly.js angular-plotly.js
+npm install plotly.js-dist-min

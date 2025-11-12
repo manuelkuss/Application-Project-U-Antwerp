@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
-import { Header } from '../header/header';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-test-page',
-  imports: [RouterOutlet, Header, NgxChartsModule],
+  imports: [NgxChartsModule],
   templateUrl: './test-page.html',
   styleUrl: './test-page.scss',
 })
