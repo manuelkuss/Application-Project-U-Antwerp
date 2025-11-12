@@ -4,3 +4,5 @@
 /visualizeDataProject/frontend/.vscode/
 /visualizeDataProject/frontend/node_modules/
 /visualizeDataProject/visualizeDataProject/__pycache__
+/frontend/node_modules/
+/frontend/.angular/
