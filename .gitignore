@@ -1,9 +1,6 @@
-/venv/
-/.idea/
-/node_modules/
-/visualizeDataProject/frontend/.angular/
-/visualizeDataProject/frontend/.vscode/
-/visualizeDataProject/frontend/node_modules/
-/visualizeDataProject/visualizeDataProject/__pycache__
-/frontend/node_modules/
-/frontend/.angular/
+venv/
+.idea/
+node_modules/
+.angular/
+.vscode/
+__pycache__/

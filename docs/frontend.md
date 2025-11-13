@@ -1,0 +1,4 @@
+# Angular Frontend
+
+Structure:
+- TODO

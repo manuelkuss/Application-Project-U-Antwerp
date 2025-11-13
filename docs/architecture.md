@@ -19,6 +19,7 @@ Reasons to use Angular:
   - Components
   - Services
 
+Details on frontend see in `frontend.md`.
 
 ## Backend
 
@@ -33,6 +34,7 @@ Versions:
 - Python 3.11.8 (main, Feb  7 2024, 21:52:08) [GCC 13.2.0] on linux 
 - pip 23.3.2 from /usr/local/lib/python3.11/dist-packages/pip (python 3.11)
 
+Details on frontend see in `backend.md`.
 
 ## API
 
