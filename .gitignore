@@ -1,5 +1,6 @@
 /venv/
 /.idea/
+/node_modules/
 /visualizeDataProject/frontend/.angular/
 /visualizeDataProject/frontend/.vscode/
 /visualizeDataProject/frontend/node_modules/

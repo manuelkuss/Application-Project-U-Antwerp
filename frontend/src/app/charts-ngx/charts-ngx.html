@@ -1,23 +1,26 @@
 <div class="container my-4">
-  <h1 class="mb-4 text-center">NGX Charts</h1>
+    <h1 class="mb-4 text-center">NGX Charts</h1>
 
-    <div *ngFor="let chart of chartData">
-        <h2>{{ chart.name }}</h2>
+    <!-- Show spinner while chartData is loading -->
+    <div *ngIf="!chartData || chartData.length === 0" class="d-flex justify-content-center align-items-center"
+        style="height: 200px;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 
-        <div class="chart-box">
-            <ngx-charts-line-chart
-                [results]="[chart]"
-                [xAxis]="true"
-                [yAxis]="true"
-                [showGridLines]="true"
-                [showXAxisLabel]="true"
-                [showYAxisLabel]="true"
-                [xAxisLabel]="'m/z'"
-                [yAxisLabel]="'Intensity'"
-                [autoScale]="true"
-                [timeline]="false">
-            </ngx-charts-line-chart>
+    <!-- Show charts once data is available -->
+    <div *ngIf="chartData && chartData.length > 0">
+        <div *ngFor="let chart of chartData">
+            <h2>{{ chart.name }}</h2>
 
+            <div class="chart-box">
+                <ngx-charts-line-chart [results]="[chart]" [xAxis]="true" [yAxis]="true" [showGridLines]="true"
+                    [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'m/z'" [yAxisLabel]="'Intensity'"
+                    [autoScale]="true" [timeline]="false">
+                </ngx-charts-line-chart>
+
+            </div>
         </div>
     </div>
 
