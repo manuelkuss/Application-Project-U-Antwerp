@@ -17,22 +17,25 @@ import { HttpClientModule } from '@angular/common/http';
 export class Sequence {
   sequenceId: number | null = null;
   sequenceData: SequenceModel | null = null;
+  sequencePlotPath: string = "http://localhost:8000/api/media/output_plots/sequence_"
   errorMessage: string | null = null;
+  columnKeys: (keyof SequenceModel)[] = ['id', 'title', 'sequence', 'PSH', 'PSM_ID', 'accession', 'unique', 'database', 'database_version', 'search_engine', 'search_engine_score_1', 'modifications', 'retention_time', 'charge_x', 'exp_mass_to_charge', 'calc_mass_to_charge', 'spectra_ref', 'pre', 'post', 'start', 'end', 'opt_ms_run_1_aa_scores', 'scan_number', 'pepmass', 'charge_y', 'scans', 'rtinseconds', 'seq', 'mz_array', 'intensity_array', 'charge_array'];
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router,
     private sequenceService: SequenceService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     console.log("id: ", id);
-    if (id) {  
+    if (id) {
       this.sequenceId = +id;
       this.fetchSequence(+id);
     }
   }
+
 
   onIdChange(id: number | null) {
     if (!id) return;
@@ -52,9 +55,16 @@ export class Sequence {
     }
 
     this.sequenceService.getSequence(this.sequenceId).subscribe({
-      next: (data) => {
-        this.sequenceData = data;
+      next: (data: any) => {
+        this.sequenceData = {
+          ...data,
+          intensity_array: data['intensity array'],
+          mz_array: data['m/z array'],
+          charge_array: data['charge array']
+        };
+        // this.sequenceData = data;
         this.errorMessage = null;
+        console.log(this.sequenceData)
       },
       error: (err) => {
         this.sequenceData = null;

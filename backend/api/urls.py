@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import NoteViewSet, ChartDataView, sequence_title
+from .views import NoteViewSet, ChartDataView, sequence_get
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -10,7 +10,7 @@ router.register(r'notes', NoteViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path("chart-data/", ChartDataView.as_view(), name="chart-data"),
-    path("sequence/<int:id>/", sequence_title, name='sequence-title')
+    path("sequence/<int:id>/", sequence_get, name='sequence-title')
 ]
 
 if settings.DEBUG:
