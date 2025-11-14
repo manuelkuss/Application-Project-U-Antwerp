@@ -39,3 +39,7 @@ TODO: Try this out: https://mattermost.com/blog/user-authentication-setting-up-a
 
 npm install plotly.js angular-plotly.js
 npm install plotly.js-dist-min
+
+
+Example interactive web-view:
+- https://proteomecentral.proteomexchange.org/usi/?usi=mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_05_2Feb12_Cougar_11-10-09.mzML:scan:12298:[iTRAQ4plex]-LHFFM[Oxidation]PGFAPLTSR/3

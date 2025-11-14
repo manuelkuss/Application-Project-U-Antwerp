@@ -3,6 +3,7 @@ import { Notes } from './notes/notes';
 import { Home } from './home/home';
 import { ChartsNGX } from './charts-ngx/charts-ngx';
 import { ChartsPlotly } from './charts-plotly/charts-plotly';
+import { Sequence } from './sequence/sequence';
 
 export const routes: Routes = [
     {
@@ -25,5 +26,9 @@ export const routes: Routes = [
     {
         path: 'charts-plotly',
         component: ChartsPlotly
+    },
+    { 
+        path: 'sequence/:id', 
+        component: Sequence 
     }
 ];

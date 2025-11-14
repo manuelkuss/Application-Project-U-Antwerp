@@ -19,3 +19,10 @@ class Note(models.Model):
 #
 #     def __str__(self):
 #         return self.title
+
+class Sequence(models.Model):
+    title = models.CharField(max_length=255)
+    sequence = models.TextField(default="")
+
+    def __str__(self):
+        return self.title

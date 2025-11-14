@@ -1,0 +1,45 @@
+<div class="container">
+  <h1 class="mb-4 text-center">Sequence Metadata Viewer</h1>
+
+  <div class="mb-3">
+    <label for="seq-id" class="form-label">Sequence ID</label>
+    <input id="seq-id" type="number" class="form-control" [(ngModel)]="sequenceId" (ngModelChange)="onIdChange($event)"
+      placeholder="Enter sequence ID..." />
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="sequenceData" class="card shadow-sm">
+
+    <div class="card-header bg-secondary text-white">
+      <h4 class="mb-0">Sequence number: {{ sequenceData?.title }}</h4>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <p><strong>ID:</strong> {{ sequenceData?.id }}</p>
+          <p><strong>Sequence:</strong> {{ sequenceData?.sequence }}</p>
+          <p><strong>TODO:</strong> {{ sequenceData?.id }}</p>
+          <p><strong>TODO:</strong> {{ sequenceData?.id }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>TODO:</strong> {{ sequenceData?.id }}</p>
+          <p><strong>TODO:</strong> {{ sequenceData?.id }}</p>
+        </div>
+      </div>
+
+      <p class="mb-3"><strong>Sequence:</strong> {{ sequenceData?.sequence }}</p>
+
+      <img class="img-fluid rounded border" [src]="'http://localhost:8000/api/media/output_plots/sequence_' + sequenceData?.id + '.png'"
+        alt="Sequence plot" />
+    </div>
+
+    <!-- <p><strong>Sequence:</strong> {{ sequenceData?.sequence }}</p>
+    <img [src]="'http://localhost:8000/api/media/' + sequenceData.file_path" alt="Sequence plot" /> -->
+  </div>
+
+</div>
