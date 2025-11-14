@@ -18,7 +18,7 @@ class NoteViewSet(viewsets.ModelViewSet):
 class ChartDataView(APIView):
     def get(self, request):
 
-        data = read_mgf_file_and_return_first_n_spectra(3)
+        data = read_mgf_file_and_return_first_n_spectra(mgf_file_path="../resources/sample_preprocessed_spectra.mgf", n=3)
 
         return Response(data)
 
@@ -36,7 +36,9 @@ def sequence_get(request, id):
 
     if not os.path.exists(CSV_FILE):
         data_processing_for_coding_task(mgf_file_path="../resources/sample_preprocessed_spectra.mgf",
-                                        mztab_file_path="../resources/casanovo_20251029091517.mztab")
+                                        mztab_file_path="../resources/casanovo_20251029091517.mztab",
+                                        sequence_metadata_csv_file_path="api/utils/sequence_metadata.csv",
+                                        output_plot_path="media/output_plots/")
 
         if not os.path.exists(CSV_FILE):
             return Response({'error': 'Metadata file not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -4,15 +4,13 @@ from django.shortcuts import render
 from pyteomics import mgf
 import csv
 import os
-
 import pandas as pd
 from pyteomics import mgf, mztab
 import matplotlib.pyplot as plt
 import spectrum_utils.plot as sup
 import spectrum_utils.spectrum as sus
 
-def read_mgf_file_and_return_first_n_spectra(n: int):
-    mgf_file_path = "../resources/sample_preprocessed_spectra.mgf"
+def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
 
     spectra = []
     with mgf.read(mgf_file_path) as reader:
@@ -79,7 +77,7 @@ def parse_mztab_to_dataframe(mztab_file):
     # psm_df = mztab_data.psm_data
     # return psm_df
 
-def data_processing_for_coding_task(mgf_file_path, mztab_file_path):
+def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_metadata_csv_file_path, output_plot_path):
 
     mgf_df = parse_mgf_to_dataframe(mgf_file_path)
     mztab_df = parse_mztab_to_dataframe(mztab_file_path)
@@ -90,12 +88,6 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path):
     # merge
     merged_df = pd.merge(mztab_df, mgf_df, on='scan_number', how='inner')
 
-    csv_file = 'api/utils/sequence_metadata.csv'
-    # metadata_fieldnames = ['id', 'title', 'sequence', 'metadata']
-
-    # with open(csv_file, mode='w', newline='') as f:
-    #     writer = csv.DictWriter(f, metadata_fieldnames)
-    #     writer.writeheader()
 
     for i, row in merged_df.iterrows():
         pepmass = row['pepmass']
@@ -112,7 +104,7 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path):
         )
         spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
 
-        file_path = "media/output_plots/sequence_" + row['title'] + ".png"
+        file_path = output_plot_path + "sequence_" + row['title'] + ".png"
 
         fig, ax = plt.subplots(figsize=(12, 6))
         sup.spectrum(spectrum, grid=False, ax=ax)
@@ -126,18 +118,12 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path):
         new_data = {
             'id': row['title'],
             **row_dict
-            # 'metadata': row
         }
 
-        with open(csv_file, mode='a', newline='') as f:
+
+        with open(sequence_metadata_csv_file_path, mode='a', newline='') as f:
             writer = csv.DictWriter(f, new_data.keys())
             writer.writeheader()
             writer.writerow(new_data)
             print(f"Added sequence with id {new_data['id']}")
-
-        if i == 10:
-            break
-
-# data_processing_for_coding_task(mgf_file_path = "../../../resources/sample_preprocessed_spectra.mgf", mztab_file_path = "../../../resources/casanovo_20251029091517.mztab")
-
 
