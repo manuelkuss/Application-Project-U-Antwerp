@@ -8,8 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class NoteService {
-    private apiUrl = environment.apiUrl + 'notes/';
-
+  private apiUrl = environment.apiUrl + 'notes/';
 
   constructor(private http: HttpClient) {}
 

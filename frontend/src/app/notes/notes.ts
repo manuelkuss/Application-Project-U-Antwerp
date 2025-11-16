@@ -22,13 +22,13 @@ export class Notes implements OnInit {
   }
 
   loadNotes(): void {
-  this.noteService.getNotes().subscribe({
-    next: (data: Note[]) => {
-      console.log('Fetched notes:', data); // <-- add this
-      this.notes = data;
-    },
-    error: (err) => console.error('Error loading notes', err)
-  });
+    this.noteService.getNotes().subscribe({
+      next: (data: Note[]) => {
+        console.log('Fetched notes:', data);
+        this.notes = data;
+      },
+      error: (err) => console.error('Error loading notes', err)
+    });
   }
 
   add(title: string, content: string): void {

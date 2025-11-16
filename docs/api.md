@@ -11,8 +11,9 @@ API definition:
 - backend_url/api/sequence/<int:id>
 - backend_url/api/sequence-plotly-data/<int:id>
 
-- backend_url/api/mfg-file/<string:mfg-file-name>
-- backend_url/api/mfg-file-sequence/<string:mfg-file-name>/<int:sequenec-id>
+- backend_url/api/mgf-files
+- backend_url/api/mgf-file-info/<string:mgf-file-name>
+- backend_url/api/mgf-file-sequence/<string:mgf-file-name>/<int:sequenec-id>
 
 Media url: 
 

@@ -7,7 +7,9 @@ import os
 import pandas as pd
 from pyteomics import mgf, mztab
 import matplotlib.pyplot as plt
-import spectrum_utils.iplot as sup
+import spectrum_utils.plot as sup
+# change to
+# import spectrum_utils.iplot as sup
 import spectrum_utils.spectrum as sus
 
 def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
@@ -112,6 +114,7 @@ def get_plotly_data_for_sequence(mgf_file_path, mztab_file_path, id: int):
             # annotate
             spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
 
+            # change to:
             chart = sup.spectrum(spectrum)
             chart.properties(width=640, height=400).save("iplot_spectrum.json")
 
@@ -193,10 +196,13 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
             **row_dict
         }
 
+        if not os.path.exists(sequence_metadata_csv_file_path):
+            with open(sequence_metadata_csv_file_path, mode='w', newline='') as f:
+                writer = csv.DictWriter(f, new_data.keys())
+                writer.writeheader()
 
         with open(sequence_metadata_csv_file_path, mode='a', newline='') as f:
             writer = csv.DictWriter(f, new_data.keys())
-            writer.writeheader()
             writer.writerow(new_data)
             print(f"Added sequence with id {new_data['id']}")
 
