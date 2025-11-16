@@ -14,3 +14,4 @@ python manage.py createsuperuser
 To run the server:
 python manage.py runserver
 
+ pip install "altair[all]" 

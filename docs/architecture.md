@@ -4,7 +4,7 @@
 
 Angular (UI)
     |
-REST/GraphQL API via HTTPS
+REST API via HTTPS
     |
 Python Backend (FastAPI / Django / Flask)
 
@@ -38,9 +38,8 @@ Details on frontend see in `backend.md`.
 
 ## API
 
-The frontend calls the apis from the backend server.
+The frontend calls the apis from the backend server. 
 
-APIs:
-- notes: http://127.0.0.1:8000/api/notes/
+API definition see `api.md`
 
 

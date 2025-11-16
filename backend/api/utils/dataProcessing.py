@@ -7,7 +7,7 @@ import os
 import pandas as pd
 from pyteomics import mgf, mztab
 import matplotlib.pyplot as plt
-import spectrum_utils.plot as sup
+import spectrum_utils.iplot as sup
 import spectrum_utils.spectrum as sus
 
 def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
@@ -49,8 +49,6 @@ def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
     return chartData
 
 
-
-
 def parse_mgf_to_dataframe(mgf_file):
     """
     Parses an MGF file and returns a pandas DataFrame.
@@ -77,7 +75,9 @@ def parse_mztab_to_dataframe(mztab_file):
     # psm_df = mztab_data.psm_data
     # return psm_df
 
-def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_metadata_csv_file_path, output_plot_path):
+
+
+def get_plotly_data_for_sequence(mgf_file_path, mztab_file_path, id: int):
 
     mgf_df = parse_mgf_to_dataframe(mgf_file_path)
     mztab_df = parse_mztab_to_dataframe(mztab_file_path)
@@ -88,6 +88,79 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
     # merge
     merged_df = pd.merge(mztab_df, mgf_df, on='scan_number', how='inner')
 
+    # row = merged_df[merged_df['title'] == str(id)]
+    # print(row)
+
+    # annotate
+    # spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
+
+    for i, row in merged_df.iterrows():
+        if row['title'] == str(id):
+            pepmass = row['pepmass']
+            precursor_mz = pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass
+            charge = row["charge_x"]
+            precursor_charge = charge
+
+            spectrum = sus.MsmsSpectrum(
+                identifier=row['title'],
+                precursor_mz=pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass,
+                precursor_charge=precursor_charge,
+                mz=row["m/z array"],
+                intensity=row["intensity array"],
+            )
+
+            # annotate
+            spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
+
+            chart = sup.spectrum(spectrum)
+            chart.properties(width=640, height=400).save("iplot_spectrum.json")
+
+
+
+            # mz_value = spectrum.mz[ann.peak_index]
+            # intensity_value = spectrum.intensity[ann.peak_index]
+            # label = str(ann.interpretation)  # readable fragment label
+
+            # annotations_list = []
+            # for ann in spectrum.annotation:
+            #     annotations_list.append ({
+            #         "mz": float(spectrum.mz[ann.peak_index]),
+            #         "intensity": float(spectrum.intensity[ann.peak_index]),
+            #         "label": str(ann.interpretation)
+            #     })
+
+
+
+            # fig, ax = plt.subplots(figsize=(12, 6))
+            # sup.spectrum(spectrum, grid=False, ax=ax)
+            # ax.set_title(row['sequence'], fontdict={"fontsize": "xx-large"})
+            # ax.spines["right"].set_visible(False)
+            # ax.spines["top"].set_visible(False)
+            # plt.close()
+            #
+            # return {
+            #     "id": row["title"],
+            #     "sequence": row["sequence"],
+            #     "mz": spectrum.mz.tolist(),
+            #     "intensity": spectrum.intensity.tolist(),
+            #     # "annotations": annotations_list
+            # }
+
+# print(get_plotly_data_for_sequence(
+#         mgf_file_path="../../../resources/sample_preprocessed_spectra.mgf",
+#         mztab_file_path="../../../resources/casanovo_20251029091517.mztab",
+#         id=3))
+
+def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_metadata_csv_file_path, output_plot_path):
+
+    mgf_df = parse_mgf_to_dataframe(mgf_file_path)
+    mztab_df = parse_mztab_to_dataframe(mztab_file_path)
+
+    mztab_df['scan_number'] = mztab_df['spectra_ref'].str.extract('index=(\d+)')
+    mgf_df['scan_number'] = mgf_df['title']
+
+    # merge
+    merged_df = pd.merge(mztab_df, mgf_df, on='scan_number', how='inner')
 
     for i, row in merged_df.iterrows():
         pepmass = row['pepmass']
