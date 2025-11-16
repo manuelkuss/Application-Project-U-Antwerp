@@ -1,6 +1,5 @@
 export interface SequenceModel {
   id: number;
-  title: string;
   sequence: string;
   PSH?: string;
   PSM_ID?: number;
@@ -22,6 +21,7 @@ export interface SequenceModel {
   end?: number | null;
   opt_ms_run_1_aa_scores?: string;
   scan_number?: number;
+  title: string;
   pepmass?: string;
   charge_y?: string;
   scans?: string;

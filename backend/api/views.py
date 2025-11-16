@@ -76,7 +76,7 @@ def mgf_file_get_info(request, name):
         data_processing_for_coding_task(mgf_file_path="../resources/sample_preprocessed_spectra.mgf",
                                         mztab_file_path="../resources/casanovo_20251029091517.mztab",
                                         sequence_metadata_csv_file_path="assets/sample_preprocessed_spectra/sample_preprocessed_spectra_info.csv",
-                                        output_plot_path="media/output_plots/")
+                                        output_plot_path="media/output_iplots/")
 
     if not os.path.exists(mgf_info_file):
         return Response({'error': 'Csv file not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

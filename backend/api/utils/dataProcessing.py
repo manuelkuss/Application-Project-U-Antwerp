@@ -6,8 +6,10 @@ import csv
 import os
 import pandas as pd
 from pyteomics import mgf, mztab
+
 import matplotlib.pyplot as plt
-import spectrum_utils.plot as sup
+import spectrum_utils.iplot as sup
+
 # change to
 # import spectrum_utils.iplot as sup
 import spectrum_utils.spectrum as sus
@@ -166,6 +168,9 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
     merged_df = pd.merge(mztab_df, mgf_df, on='scan_number', how='inner')
 
     for i, row in merged_df.iterrows():
+
+        # -- generate iplot json file (with spectrum_utils.iplot import)
+
         pepmass = row['pepmass']
         precursor_mz = pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass
         charge = row["charge_x"]
@@ -178,17 +183,45 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
             mz=row["m/z array"],
             intensity=row["intensity array"],
         )
+
+        # annotate
         spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
 
-        file_path = output_plot_path + "sequence_" + row['title'] + ".png"
+        iplot_file_path = output_plot_path + "sequence_" + row['title'] + ".json"
 
-        fig, ax = plt.subplots(figsize=(12, 6))
-        sup.spectrum(spectrum, grid=False, ax=ax)
-        ax.set_title(row['sequence'], fontdict={"fontsize": "xx-large"})
-        ax.spines["right"].set_visible(False)
-        ax.spines["top"].set_visible(False)
-        plt.savefig(file_path, dpi=300, bbox_inches="tight", transparent=True)
-        plt.close()
+        chart = sup.spectrum(spectrum)
+        chart.properties(width=640, height=400).save(iplot_file_path)
+
+
+        # -- generate plots (with spectrum_utils.plot import)
+
+        # pepmass = row['pepmass']
+        # precursor_mz = pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass
+        # charge = row["charge_x"]
+        # precursor_charge = charge
+        #
+        # spectrum = sus.MsmsSpectrum(
+        #     identifier=row['title'],
+        #     precursor_mz=pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass,
+        #     precursor_charge=precursor_charge,
+        #     mz=row["m/z array"],
+        #     intensity=row["intensity array"],
+        # )
+        # spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
+        #
+        # file_path = output_plot_path + "sequence_" + row['title'] + ".png"
+        #
+        # fig, ax = plt.subplots(figsize=(12, 6))
+        # sup.spectrum(spectrum, grid=False, ax=ax)
+        # ax.set_title(row['sequence'], fontdict={"fontsize": "xx-large"})
+        # ax.spines["right"].set_visible(False)
+        # ax.spines["top"].set_visible(False)
+        # plt.savefig(file_path, dpi=300, bbox_inches="tight", transparent=True)
+        # plt.close()
+        #
+
+
+        # -- write metadata to metadata csv file
 
         row_dict = row.to_dict()
         new_data = {
@@ -205,4 +238,9 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
             writer = csv.DictWriter(f, new_data.keys())
             writer.writerow(new_data)
             print(f"Added sequence with id {new_data['id']}")
+            # print(f"Added sequence with id {new_data}")
 
+# data_processing_for_coding_task(mgf_file_path="../../../resources/sample_preprocessed_spectra.mgf",
+#                                         mztab_file_path="../../../resources/casanovo_20251029091517.mztab",
+#                                         sequence_metadata_csv_file_path="../../assets/sample_preprocessed_spectra/sample_preprocessed_spectra_info.csv",
+#                                         output_plot_path="../../media/output_iplots/")

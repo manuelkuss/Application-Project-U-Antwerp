@@ -24,7 +24,7 @@
 
     <div *ngIf="sequenceData">
 
-        <select class="form-select" [(ngModel)]="sequenceData.id">
+        <select class="form-select" [(ngModel)]="sequenceData.id" (ngModelChange)="onMgfFileChange($event)">
 
             <option *ngFor="let mgfFileSequencesId of mgfFileSequencesIds" [value]="mgfFileSequencesId">
                 {{ mgfFileSequencesId }}
@@ -33,8 +33,10 @@
 
         <h2 class="mt-2 mb-2">Sequence number: {{ sequenceData?.title }}</h2>
 
-        <img class="img-fluid rounded border mb-2" [src]="sequencePlotPath + sequenceData?.id + '.png'"
-            alt="Sequence plot" />
+        <div id="vis"></div>
+
+        <!-- <img class="img-fluid rounded border mb-2" [src]="sequencePlotPath + sequenceData?.id + '.png'"
+            alt="Sequence plot" /> -->
 
         <table class="table table-bordered table-striped">
             <tbody>

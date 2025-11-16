@@ -6,6 +6,7 @@ import { MgfFile } from '../models/mgfFile.model';
 import { FormsModule } from '@angular/forms';
 import { SequenceModel } from '../models/sequence.model';
 import { Sequence } from '../sequence/sequence';
+import vegaEmbed from 'vega-embed';
 
 @Component({
   selector: 'app-sequence-viewer',
@@ -66,12 +67,36 @@ export class SequenceViewer {
           this.mgfFileSequencesIds = sequencesIdsList;
         },
         complete: () => {
+          console.log(this.mgfFileSequences);
           this.sequenceData = this.mgfFileSequences[0];
+          this.renderPlot();
         },
         error: (err) => {
           this.errorMessage = err;
         }
       });
     }
+  }
+
+  onMgfFileChange(selectedId: string): void {
+    
+    this.mgfFileSequences.forEach((sequenceModel: SequenceModel) => {
+      if (sequenceModel.id == Number(selectedId)) {
+        this.sequenceData = sequenceModel;
+      }
+    });
+    
+    this.renderPlot();
+
+  }
+
+  renderPlot() {
+
+    var spec = 'http://localhost:8000/api/media/output_iplots/' + 'sequence_' + this.sequenceData?.id + '.json';
+
+    var opt = { actions: true };
+
+    vegaEmbed('#vis', spec, opt);
+    
   }
 }
