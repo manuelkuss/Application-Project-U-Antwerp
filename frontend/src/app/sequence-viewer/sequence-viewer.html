@@ -17,7 +17,7 @@
     <!-- Show spinner while sequenceData is loading -->
     <div *ngIf="!sequenceData && !errorMessage" class="d-flex justify-content-center align-items-center"
         style="height: 200px;">
-        <div class="spinner-border text-primary" role="status">
+        <div class="spinner-border spinner-color" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
@@ -31,9 +31,14 @@
             </option>
         </select>
 
-        <h2 class="mt-2 mb-2">Sequence number: {{ sequenceData?.title }}</h2>
+        <h2 class="mt-2 mb-2">Sequence number: {{ sequenceData?.id }}</h2>
 
-        <div id="vis"></div>
+        <label for="heightSlider" class="form-label">Height</label>
+        <input type="range" min="50" max="1000" step="1" class="form-range" id="heightSlider" [(ngModel)]="chartHeight"
+            (input)="onHeightChange()">
+        
+        <div id="vis" class="vega-container" [ngStyle]="{'height': chartHeight}"></div>
+
 
         <!-- <img class="img-fluid rounded border mb-2" [src]="sequencePlotPath + sequenceData?.id + '.png'"
             alt="Sequence plot" /> -->

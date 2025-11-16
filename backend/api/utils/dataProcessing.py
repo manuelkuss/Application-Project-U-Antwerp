@@ -190,7 +190,7 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
         iplot_file_path = output_plot_path + "sequence_" + row['title'] + ".json"
 
         chart = sup.spectrum(spectrum)
-        chart.properties(width=640, height=400).save(iplot_file_path)
+        chart.properties(width="container").save(iplot_file_path)
 
 
         # -- generate plots (with spectrum_utils.plot import)

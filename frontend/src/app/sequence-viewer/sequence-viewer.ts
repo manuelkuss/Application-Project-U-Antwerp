@@ -27,6 +27,8 @@ export class SequenceViewer {
 
   errorMessage: string | null = null;
 
+  chartHeight: number = 100;
+
 
   constructor(private sequenceViewerService: SequenceViewerService) { }
 
@@ -90,13 +92,20 @@ export class SequenceViewer {
 
   }
 
+  onHeightChange() {
+    this.renderPlot();
+  }
+
   renderPlot() {
 
     var spec = 'http://localhost:8000/api/media/output_iplots/' + 'sequence_' + this.sequenceData?.id + '.json';
 
-    var opt = { actions: true };
+    var opt = { 
+      actions: true, 
+      height: this.chartHeight,
+    };
 
     vegaEmbed('#vis', spec, opt);
-    
+
   }
 }
