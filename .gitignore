@@ -6,3 +6,4 @@ node_modules/
 __pycache__/
 *.sqlite3
 test-data-processing/
+docs/dev-notes/
