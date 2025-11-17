@@ -1,43 +1,51 @@
 <div class="container my-4">
     <h1 class="mb-4 text-center">Sequence Viewer</h1>
 
-    <!-- <select class="form-select" aria-label="Default select example">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select> -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="form-floating">
+                <select id="mgfFileSelect" class="form-select" [(ngModel)]="mgfFileSelected">
+                    <option *ngFor="let mgfFile of mgfFiles" [value]="mgfFile">
+                        {{ mgfFile.name }}
+                    </option>
+                </select>
+                <label for="mgfFileSelect">Select mgf file</label>
+            </div>
 
-    <select class="form-select" [(ngModel)]="mgfFileSelected">
-        <option *ngFor="let mgfFile of mgfFiles" [value]="mgfFile">
-            {{ mgfFile.name }}
-        </option>
-    </select>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <select id="sequenceSelect" *ngIf="sequenceData" class="form-select" [(ngModel)]="selectedSequenceId"
+                    (ngModelChange)="onMgfFileChange($event)">
+
+                    <option *ngFor="let mgfFileSequencesId of mgfFileSequencesIds" [value]="mgfFileSequencesId">
+                        {{ mgfFileSequencesId }}
+                    </option>
+                </select>
+                <label for="sequenceSelect">Select sequence</label>
+
+            </div>
+
+        </div>
+    </div>
 
     <!-- Show spinner while sequenceData is loading -->
-    <div *ngIf="!sequenceData && !errorMessage" class="d-flex justify-content-center align-items-center"
+    <div *ngIf="!sequenceData && !errorOccurred" class="d-flex justify-content-center align-items-center"
         style="height: 200px;">
         <div class="spinner-border spinner-color" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 
-    <div *ngIf="sequenceData">
+    <div *ngIf="sequenceData && !errorOccurred">
 
-        <select class="form-select" [(ngModel)]="sequenceData.id" (ngModelChange)="onMgfFileChange($event)">
+        <h2 class="mt-2 mb-2">Sequence: {{ sequenceData?.sequence }}</h2>
 
-            <option *ngFor="let mgfFileSequencesId of mgfFileSequencesIds" [value]="mgfFileSequencesId">
-                {{ mgfFileSequencesId }}
-            </option>
-        </select>
-
-        <h2 class="mt-2 mb-2">Sequence number: {{ sequenceData?.id }}</h2>
-
-        <label for="heightSlider" class="form-label">Height</label>
+        <label id="heightSliderLabel" for="heightSlider" class="form-label">Height: {{ chartHeight }}</label>
         <input type="range" min="50" max="1000" step="1" class="form-range" id="heightSlider" [(ngModel)]="chartHeight"
             (input)="onHeightChange()">
-        
-        <div id="vis" class="vega-container" [ngStyle]="{'height': chartHeight}"></div>
+
+        <div id="vis" class="mb-4 vega-container" [ngStyle]="{'height': chartHeight}"></div>
 
 
         <!-- <img class="img-fluid rounded border mb-2" [src]="sequencePlotPath + sequenceData?.id + '.png'"
@@ -52,6 +60,10 @@
             </tbody>
         </table>
 
+    </div>
+
+    <div *ngIf="errorOccurred" class="alert alert-danger">
+        {{ errorMessage }}
     </div>
 
 </div>

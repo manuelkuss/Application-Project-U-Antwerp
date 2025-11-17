@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { SequenceModel } from '../models/sequence.model';
 import { Sequence } from '../sequence/sequence';
 import vegaEmbed from 'vega-embed';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-sequence-viewer',
@@ -21,11 +22,13 @@ export class SequenceViewer {
   mgfFileSequences: SequenceModel[] = [];
   mgfFileSequencesIds: number[] = [];
 
+  selectedSequenceId: number | null = null;
   sequenceData: SequenceModel | null = null;
-  sequencePlotPath: string = "http://localhost:8000/api/media/output_plots/sequence_"
+  sequenceiPlotPath: string = environment.mediaUrl + "output_iplots/sequence_"
   columnKeys: (keyof SequenceModel)[] = ['id', 'title', 'sequence', 'PSH', 'PSM_ID', 'accession', 'unique', 'database', 'database_version', 'search_engine', 'search_engine_score_1', 'modifications', 'retention_time', 'charge_x', 'exp_mass_to_charge', 'calc_mass_to_charge', 'spectra_ref', 'pre', 'post', 'start', 'end', 'opt_ms_run_1_aa_scores', 'scan_number', 'pepmass', 'charge_y', 'scans', 'rtinseconds', 'seq', 'mz_array', 'intensity_array', 'charge_array'];
 
   errorMessage: string | null = null;
+  errorOccurred: boolean = false;
 
   chartHeight: number = 100;
 
@@ -56,7 +59,6 @@ export class SequenceViewer {
           var sequencesList: SequenceModel[] = [];
           var sequencesIdsList: number[] = [];
           data.forEach((sequence: any) => {
-            // console.log("sequence: ", sequence);
             sequencesList.push({
               ...sequence,
               intensity_array: sequence['intensity array'],
@@ -71,25 +73,27 @@ export class SequenceViewer {
         complete: () => {
           console.log(this.mgfFileSequences);
           this.sequenceData = this.mgfFileSequences[0];
-          this.renderPlot();
+          this.selectedSequenceId = this.sequenceData.id;
+
+          setTimeout(() => this.renderPlot(), 0);
         },
         error: (err) => {
           this.errorMessage = err;
+          this.errorOccurred = true;
         }
       });
     }
   }
 
   onMgfFileChange(selectedId: string): void {
-    
-    this.mgfFileSequences.forEach((sequenceModel: SequenceModel) => {
-      if (sequenceModel.id == Number(selectedId)) {
-        this.sequenceData = sequenceModel;
+
+    this.mgfFileSequences.forEach((seqModel: SequenceModel) => {
+      if (seqModel.id == Number(selectedId)) {
+        this.sequenceData = seqModel;
+        
+        setTimeout(() => this.renderPlot(), 0);
       }
     });
-    
-    this.renderPlot();
-
   }
 
   onHeightChange() {
@@ -98,14 +102,22 @@ export class SequenceViewer {
 
   renderPlot() {
 
-    var spec = 'http://localhost:8000/api/media/output_iplots/' + 'sequence_' + this.sequenceData?.id + '.json';
+    var spec = this.sequenceiPlotPath + this.sequenceData?.id + '.json';
 
-    var opt = { 
-      actions: true, 
+    console.log("path: ", spec);
+
+    var opt = {
+      actions: true,
       height: this.chartHeight,
     };
 
-    vegaEmbed('#vis', spec, opt);
+    this.errorOccurred = false;
+    vegaEmbed('#vis', spec, opt)
+      .catch((err) => {
+        this.errorMessage = "Sequence json " + spec + " not found!";
+        this.errorOccurred = true;
+        console.log("test", err);
+      });
 
   }
 }

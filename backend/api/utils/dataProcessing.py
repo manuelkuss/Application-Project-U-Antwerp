@@ -6,6 +6,7 @@ import csv
 import os
 import pandas as pd
 from pyteomics import mgf, mztab
+import altair as alt
 
 import matplotlib.pyplot as plt
 import spectrum_utils.iplot as sup
@@ -190,6 +191,22 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
         iplot_file_path = output_plot_path + "sequence_" + row['title'] + ".json"
 
         chart = sup.spectrum(spectrum)
+
+        # added
+        showBase = alt.param(name="showBase", value=True, bind=alt.binding_checkbox())
+        showY = alt.param(name="showY", value=True, bind=alt.binding_checkbox())
+        showB = alt.param(name="showB", value=True, bind=alt.binding_checkbox())
+        chart = chart.add_params(showBase, showY, showB)
+
+        for i, layer in enumerate(chart.layer):
+            chart.layer[i] = layer.transform_filter(
+                "(datum.color === '#212121' && showBase) || "
+                "(datum.color === '#D32F2F' && showY) || "
+                "(datum.color === '#1976D2' && showB)"
+            )
+
+        #
+
         chart.properties(width="container").save(iplot_file_path)
 
 

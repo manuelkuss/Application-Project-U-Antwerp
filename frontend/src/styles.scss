@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+
+.vega-bindings .vega-bind label span {
+  display: inline-block;
+  width: 120px;
+  margin-right: 5px;
+}
