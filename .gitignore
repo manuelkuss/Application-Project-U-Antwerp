@@ -4,3 +4,5 @@ node_modules/
 .angular/
 .vscode/
 __pycache__/
+*.sqlite3
+test-data-processing/

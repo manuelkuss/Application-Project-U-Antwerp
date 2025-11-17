@@ -3,11 +3,10 @@
 Structure:
 - TODO
 
-To creat an admin account:
-
-```
-python manage.py createsuperuser
-```
+Access admin page at `http://localhost:8000/admin/`:
+- Test admin credentials:
+  - Username: `admin`
+  - Password: `admin`
 
 # Testing
 
