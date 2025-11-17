@@ -1,20 +1,20 @@
 # REST API Definition:
 
 For development: 
+- backend_url = `http://127.0.0.1:8000`
 
-backend_url = `http://127.0.0.1:8000`
-
-API definition:
-
-- backend_url/api/notes/
-- backend_url/api/chart-data/
-- backend_url/api/sequence/<int:id>
-- backend_url/api/sequence-plotly-data/<int:id>
+**API definition**:
 
 - backend_url/api/mgf-files
+  - Get information on the existing mgf-file in the database.
 - backend_url/api/mgf-file-info/<string:mgf-file-name>
-- backend_url/api/mgf-file-sequence/<string:mgf-file-name>/<int:sequenec-id>
+  - Get information on the existing sequences (including metadata) that are defined in an mgf-file. If it is not processed already, it will preprocess the data.
+- (tmp) backend_url/api/notes/
+  - Fetch notes from database.
+- (tmp) backend_url/api/chart-data/
+  - Fetch data for charts.
 
-Media url: 
+Media url:
 
 - backend_url/api/media/...
+  - For loading additional data from the backend server, such as json file for generating interactive graphics.
