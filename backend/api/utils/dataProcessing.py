@@ -9,10 +9,8 @@ from pyteomics import mgf, mztab
 import altair as alt
 
 import matplotlib.pyplot as plt
-import spectrum_utils.iplot as sup
-
-# change to
-# import spectrum_utils.iplot as sup
+import spectrum_utils.iplot as sup      # for generating iplots
+# import spectrum_utils.plot as sup     # for generating normal plots
 import spectrum_utils.spectrum as sus
 
 def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
@@ -20,12 +18,12 @@ def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
     spectra = []
     with mgf.read(mgf_file_path) as reader:
         for i, spec in enumerate(reader, start=1):
-            mz = spec["m/z array"]  # numpy array of fragment m/z
-            inten = spec["intensity array"]  # numpy array of fragment intensities
-            meta = spec["params"]  # dict of spectrum-level metadata
+            mz = spec["m/z array"] 
+            inten = spec["intensity array"] 
+            meta = spec["params"] 
 
             title = meta.get("title")
-            pepmass = meta.get("pepmass")  # (precursor_mz, intensity?) or float
+            pepmass = meta.get("pepmass")
             charge = meta.get("charge")
             rt = meta.get("rtinseconds")
 
@@ -39,7 +37,6 @@ def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
 
             spectra.append({"spectrum": su_spec})
 
-    # spectra_df = pd.DataFrame(spectra)
     response_spectra = []
     for i in range(n):
         s = spectra[i]["spectrum"]
@@ -73,89 +70,11 @@ def parse_mgf_to_dataframe(mgf_file):
         })
     return pd.DataFrame(spectra)
 
+
 def parse_mztab_to_dataframe(mztab_file):
     psm_df = pd.read_csv(mztab_file, sep='\t', skiprows=65)
     return psm_df
-    # mztab_data = mztab.MzTab(mztab_file)
-    # psm_df = mztab_data.psm_data
-    # return psm_df
 
-
-
-def get_plotly_data_for_sequence(mgf_file_path, mztab_file_path, id: int):
-
-    mgf_df = parse_mgf_to_dataframe(mgf_file_path)
-    mztab_df = parse_mztab_to_dataframe(mztab_file_path)
-
-    mztab_df['scan_number'] = mztab_df['spectra_ref'].str.extract('index=(\d+)')
-    mgf_df['scan_number'] = mgf_df['title']
-
-    # merge
-    merged_df = pd.merge(mztab_df, mgf_df, on='scan_number', how='inner')
-
-    # row = merged_df[merged_df['title'] == str(id)]
-    # print(row)
-
-    # annotate
-    # spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
-
-    for i, row in merged_df.iterrows():
-        if row['title'] == str(id):
-            pepmass = row['pepmass']
-            precursor_mz = pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass
-            charge = row["charge_x"]
-            precursor_charge = charge
-
-            spectrum = sus.MsmsSpectrum(
-                identifier=row['title'],
-                precursor_mz=pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass,
-                precursor_charge=precursor_charge,
-                mz=row["m/z array"],
-                intensity=row["intensity array"],
-            )
-
-            # annotate
-            spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
-
-            # change to:
-            chart = sup.spectrum(spectrum)
-            chart.properties(width=640, height=400).save("iplot_spectrum.json")
-
-
-
-            # mz_value = spectrum.mz[ann.peak_index]
-            # intensity_value = spectrum.intensity[ann.peak_index]
-            # label = str(ann.interpretation)  # readable fragment label
-
-            # annotations_list = []
-            # for ann in spectrum.annotation:
-            #     annotations_list.append ({
-            #         "mz": float(spectrum.mz[ann.peak_index]),
-            #         "intensity": float(spectrum.intensity[ann.peak_index]),
-            #         "label": str(ann.interpretation)
-            #     })
-
-
-
-            # fig, ax = plt.subplots(figsize=(12, 6))
-            # sup.spectrum(spectrum, grid=False, ax=ax)
-            # ax.set_title(row['sequence'], fontdict={"fontsize": "xx-large"})
-            # ax.spines["right"].set_visible(False)
-            # ax.spines["top"].set_visible(False)
-            # plt.close()
-            #
-            # return {
-            #     "id": row["title"],
-            #     "sequence": row["sequence"],
-            #     "mz": spectrum.mz.tolist(),
-            #     "intensity": spectrum.intensity.tolist(),
-            #     # "annotations": annotations_list
-            # }
-
-# print(get_plotly_data_for_sequence(
-#         mgf_file_path="../../../resources/sample_preprocessed_spectra.mgf",
-#         mztab_file_path="../../../resources/casanovo_20251029091517.mztab",
-#         id=3))
 
 def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_metadata_csv_file_path, output_plot_path):
 
@@ -192,20 +111,19 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
 
         chart = sup.spectrum(spectrum)
 
-        # added
+        # add parameters to enable interative filters in the view
         showBase = alt.param(name="showBase", value=True, bind=alt.binding_checkbox())
         showY = alt.param(name="showY", value=True, bind=alt.binding_checkbox())
         showB = alt.param(name="showB", value=True, bind=alt.binding_checkbox())
         chart = chart.add_params(showBase, showY, showB)
 
+        # add transform filter for interactive views
         for i, layer in enumerate(chart.layer):
             chart.layer[i] = layer.transform_filter(
                 "(datum.color === '#212121' && showBase) || "
                 "(datum.color === '#D32F2F' && showY) || "
                 "(datum.color === '#1976D2' && showB)"
             )
-
-        #
 
         chart.properties(width="container").save(iplot_file_path)
 
@@ -256,6 +174,8 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
             writer.writerow(new_data)
             print(f"Added sequence with id {new_data['id']}")
             # print(f"Added sequence with id {new_data}")
+
+# for testing
 
 # data_processing_for_coding_task(mgf_file_path="../../../resources/sample_preprocessed_spectra.mgf",
 #                                         mztab_file_path="../../../resources/casanovo_20251029091517.mztab",
