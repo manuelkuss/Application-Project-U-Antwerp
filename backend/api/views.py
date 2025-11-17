@@ -20,12 +20,12 @@ class ChartDataView(APIView):
         return Response(data)
 
 
-@api_view(['GET'])
-def sequence_get_plotly_data(request, id):
-    return Response(get_plotly_data_for_sequence(
-        mgf_file_path="../resources/sample_preprocessed_spectra.mgf",
-        mztab_file_path="../resources/casanovo_20251029091517.mztab",
-        id=id))
+# @api_view(['GET'])
+# def sequence_get_plotly_data(request, id):
+#     return Response(get_plotly_data_for_sequence(
+#         mgf_file_path="../resources/sample_preprocessed_spectra.mgf",
+#         mztab_file_path="../resources/casanovo_20251029091517.mztab",
+#         id=id))
 
 class MgfFileViewSet(viewsets.ModelViewSet):
     queryset = MgfFile.objects.all()

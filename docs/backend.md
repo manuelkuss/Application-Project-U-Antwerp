@@ -19,6 +19,13 @@ Type: sqlite3
 - lightweight disk-based database
 - Suitable for prototype applications (that may be changed to other databases).
 
+## Data processing
+
+The data processing logic is placed in `backend/api/utils/dataProcessing.py`. The api functionality accessed these function to preprocess or retrieve data.
+
+The data processing function for the coding task (merge data files, annotations, and preparing objects for visualizations) is:
+- `data_processing_for_coding_task`
+
 ## Testing
 
 In backend folder run:
