@@ -39,7 +39,7 @@
 
     <div *ngIf="sequenceData && !errorOccurred">
 
-        <h2 class="mt-2 mb-2">Sequence: {{ sequenceData?.sequence }}</h2>
+        <h2 class="mt-2 mb-2">Sequence: {{ sequenceData.sequence }}</h2>
 
         <label id="heightSliderLabel" for="heightSlider" class="form-label">Height: {{ chartHeight }}</label>
         <input type="range" min="50" max="1000" step="1" class="form-range" id="heightSlider" [(ngModel)]="chartHeight"

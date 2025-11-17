@@ -5,13 +5,12 @@ import { SequenceViewerService } from '../services/sequence-viewer-service';
 import { MgfFile } from '../models/mgfFile.model';
 import { FormsModule } from '@angular/forms';
 import { SequenceModel } from '../models/sequence.model';
-import { Sequence } from '../sequence/sequence';
 import vegaEmbed from 'vega-embed';
 import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-sequence-viewer',
-  imports: [CommonModule, HttpClientModule, FormsModule, Sequence],
+  imports: [CommonModule, HttpClientModule, FormsModule],
   providers: [SequenceViewerService],
   templateUrl: './sequence-viewer.html',
   styleUrl: './sequence-viewer.scss',
