@@ -28,6 +28,11 @@ The data processing function for the coding task (merge data files, annotations,
 
 ## Testing
 
+Existing Tests:
+- Unit tests to test the Django objects (e.g. Notes, MgfFile).
+- Integration tests to test the REST API the backend provides.
+- (in future) System tests: Could be realized with Selenium to test the complete web-application with all the included components.
+
 In backend folder run:
 
 ```

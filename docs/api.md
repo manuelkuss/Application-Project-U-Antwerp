@@ -9,7 +9,7 @@ For development:
   - Get information on the existing mgf-file in the database.
 - backend_url/api/mgf-file-info/<string:mgf-file-name>
   - Get information on the existing sequences (including metadata) that are defined in an mgf-file. If it is not processed already, it will preprocess the data.
-- (tmp) backend_url/api/notes/
+- backend_url/api/notes/
   - Fetch notes from database.
 - (tmp) backend_url/api/chart-data/
   - Fetch data for charts.

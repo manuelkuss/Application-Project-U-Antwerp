@@ -6,4 +6,3 @@ Structure of the documentation:
 - `backend.md`: Backend documentation
 - `frontend.md`: Frontend documentation
 - `api.md`: REST API definition
-
