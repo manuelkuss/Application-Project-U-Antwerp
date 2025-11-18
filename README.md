@@ -2,15 +2,21 @@
 
 Documentation see in `docs/documentation.md`.
 
+Home page: 
+
+![](docs/ui-images/home.png)
+
+Sequence Viewer page: 
+
 ![](docs/ui-images/sequence-viewer.png)
 
-**More screenshots from local running instance see below.**
+More screenshots from local running instance (for PC and smartphone view) see below.
 
 ## Brief explanation of my approach:
 
-I built a web-application using Django and Angular. Since spectrum_utils is a Python package (similar to many other data-processing and ML packages), it is only logical to use a Python backend. Several reasons exist for using Django for this purpose, such as the many built-in featuers, it is free and open source, fast, and scalable. The most popular approach for creating the connection between the backend server and the frontend server for web-applications is a RESTful API. The frontend requests data via HTTP requests from the backend. For the frontend I chose Angular, since it is very common (Google, and Microsoft use it), it is rich in its features, and I am already familiar with it. For designing the UI in the frontend, I utilized Bootstrap, as it is easy to design the various responsive components.
+I built a web application using Django and Angular. Since spectrum_utils is a Python package (like many other data-processing and ML packages), it is natural to use a Python backend. Several reasons exist for using Django for this purpose, such as its many built-in features, its speed and scalability, and that it is open source. The most popular approach for connecting the backend and frontend servers in web applications is a RESTful API. The frontend requests data from the backend via HTTP. For the frontend, I chose Angular because it is widely used (Google and Microsoft use it), offers rich features, and I am already familiar with it. For designing the UI on the frontend, I used Bootstrap, as it makes it easy to create responsive components.
 
-The spectrum visualization happens as follows: In the database, a list of mgf files is stored. These files are selectable in the frontend (Sequence Viewer page). In case this file hasn't been processed already, the function `data_processing_for_coding_task` in `backend/api/utils/dataProcessing.py` is called, which reads the mgf file and the according mztab file, merges them, and creates the json files for visualizations using `spectrum_utils.iplot`. The sequence that should be visualized can be selected in another dropdown and for that seqeunce (with spectrum id) a graphic is generated using Vega. The vega-embed JS library renders the chart on the page.
+The spectrum visualization happens as follows: The database stores known mgf files. You select one of those files in the frontend to visualize on the Sequence Viewer page. If that file hasn't been processed by the backend yet, the function `data_processing_for_coding_task` in `backend/api/utils/dataProcessing.py` is called, which reads the mgf and the corresponding mztab file, merges them, and creates JSON files for visualizations using `spectrum_utils.iplot`. Furthermore, the function generates a CSV file that stores sequence information and metadata. If the mgf file has already been processed, the stored information CSV file is returned to the frontend. Now, you can select a sequence(spectrum) in another dropdown. The interactive graphic gets rendered using Vega and the vega-embed JS library. Compared to other libraries, such as plotly or ngx-charts, Vega provides the functionality to visualize the desired spectrum charts. Also, it uses the JSON format that can be generated using `spectrum_utils`.
 
 
 ## How to run the project (local)
@@ -80,6 +86,8 @@ pip install -r /path/to/requirements.txt
 
 # Screenshots from local running instance
 
+## PC View:
+
 Home page: 
 
 ![](docs/ui-images/home.png)
@@ -102,6 +110,20 @@ Ngx charts page:
 Plotly charts page:
 
 ![](docs/ui-images/plotly-charts.png)
+
+## Smartphone View:
+
+Home Page:
+
+![](docs/ui-images/home-smartphone-1.png)
+
+Home Page (Navigation):
+
+![](docs/ui-images/home-smartphone-2.png)
+
+Sequence Viewer:
+
+![](docs/ui-images/sequence-viewer-smartphone.png)
 
 
 
