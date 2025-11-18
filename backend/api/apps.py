@@ -18,6 +18,7 @@ class ApiConfig(AppConfig):
 
             print("Database file not found. Creating DB...")
             try:
+                call_command('makemigrations', interactive=False)
                 call_command('migrate', interactive=False)
 
             except OperationalError as e:
@@ -28,4 +29,3 @@ def load_initial_data(sender, **kwargs):
         call_command('loaddata', settings.DATABASES['default'].get('FIXTURES_PATH'))
     except Exception as e:
         print("Error while inserting intitial data:", e)
-

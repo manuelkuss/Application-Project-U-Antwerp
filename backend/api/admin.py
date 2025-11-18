@@ -1,10 +1,8 @@
 from django.contrib import admin
-
-# Register your models here.
-from django.contrib import admin
-from .models import Sequence, MgfFile
+from .models import MgfFile
 from .models import Note
 
-admin.site.register(Sequence)
+# Register your models here.
+
 admin.site.register(Note)
 admin.site.register(MgfFile)

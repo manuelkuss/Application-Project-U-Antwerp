@@ -1,16 +1,10 @@
-import json
-import spectrum_utils.spectrum as sus
-from django.shortcuts import render
-from pyteomics import mgf
 import csv
 import os
 import pandas as pd
-from pyteomics import mgf, mztab
+from pyteomics import mgf
 import altair as alt
 
-import matplotlib.pyplot as plt
 import spectrum_utils.iplot as sup      # for generating iplots
-# import spectrum_utils.plot as sup     # for generating normal plots
 import spectrum_utils.spectrum as sus
 
 def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
@@ -128,22 +122,8 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
         chart.properties(width="container").save(iplot_file_path)
 
 
-        # -- generate plots (with spectrum_utils.plot import)
+        # -- alternative: generate plots (with spectrum_utils.plot import)
 
-        # pepmass = row['pepmass']
-        # precursor_mz = pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass
-        # charge = row["charge_x"]
-        # precursor_charge = charge
-        #
-        # spectrum = sus.MsmsSpectrum(
-        #     identifier=row['title'],
-        #     precursor_mz=pepmass[0] if isinstance(row['pepmass'], (list, tuple)) else pepmass,
-        #     precursor_charge=precursor_charge,
-        #     mz=row["m/z array"],
-        #     intensity=row["intensity array"],
-        # )
-        # spectrum = spectrum.annotate_proforma(row['sequence'], 10, "ppm")
-        #
         # file_path = output_plot_path + "sequence_" + row['title'] + ".png"
         #
         # fig, ax = plt.subplots(figsize=(12, 6))
@@ -154,7 +134,6 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
         # plt.savefig(file_path, dpi=300, bbox_inches="tight", transparent=True)
         # plt.close()
         #
-
 
         # -- write metadata to metadata csv file
 
@@ -173,11 +152,3 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
             writer = csv.DictWriter(f, new_data.keys())
             writer.writerow(new_data)
             print(f"Added sequence with id {new_data['id']}")
-            # print(f"Added sequence with id {new_data}")
-
-# for testing
-
-# data_processing_for_coding_task(mgf_file_path="../../../resources/sample_preprocessed_spectra.mgf",
-#                                         mztab_file_path="../../../resources/casanovo_20251029091517.mztab",
-#                                         sequence_metadata_csv_file_path="../../assets/sample_preprocessed_spectra/sample_preprocessed_spectra_info.csv",
-#                                         output_plot_path="../../media/output_iplots/")

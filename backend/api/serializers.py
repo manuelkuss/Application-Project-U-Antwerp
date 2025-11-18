@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Note, Sequence, MgfFile
+from .models import Note, MgfFile
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -11,8 +11,3 @@ class MgfFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = MgfFile
         fields = '__all__'
-
-class SequenceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sequence
-        fields = ['id', 'title']
