@@ -4,6 +4,12 @@ Documentation see in `docs/documentation.md`.
 
 Screenshots from local running instance wee below.
 
+## Brief explanation of my approach:
+
+I built a web-application using Django and Angular. Since spectrum_utils is a Python package (similar to many other data-processing and ML packages), it is only logical to use a Python backend. Several reasons exist for using Django for this purpose, such as the many built-in featuers, it is free and open source, fast, and scalable. The most popular approach for creating the connection between the backend server and the frontend server for web-applications is a RESTful API. The frontend requests data via HTTP requests from the backend. For the frontend I chose Angular, since it is very common (Google, and Microsoft use it), it is rich in its features, and I am already familiar with it. For designing the UI in the frontend, I utilized Bootstrap, as it is easy to design the various responsive components.
+
+The spectrum visualization happens as follows: In the database, a list of mgf files is stored. These files are selectable in the frontend (Sequence Viewer page). In case this file hasn't been processed already, the function `data_processing_for_coding_task` in `backend/api/utils/dataProcessing.py` is called, which reads the mgf file and the according mztab file, merges them, and creates the json files for visualizations using `spectrum_utils.iplot`. The sequence that should be visualized can be selected in another dropdown and for that seqeunce (with spectrum id) a graphic is generated using Vega. The vega-embed JS library renders the chart on the page.
+
 
 ## How to run the project (local)
 

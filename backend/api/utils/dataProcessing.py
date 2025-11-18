@@ -12,19 +12,17 @@ def read_mgf_file_and_return_first_n_spectra(mgf_file_path, n: int):
     spectra = []
     with mgf.read(mgf_file_path) as reader:
         for i, spec in enumerate(reader, start=1):
-            mz = spec["m/z array"] 
-            inten = spec["intensity array"] 
-            meta = spec["params"] 
+
+            meta = spec["params"]
 
             title = meta.get("title")
             pepmass = meta.get("pepmass")
-            charge = meta.get("charge")
-            rt = meta.get("rtinseconds")
+            charge = meta.get("charge", [None])
 
             su_spec = sus.MsmsSpectrum(
                 identifier=title,
-                precursor_mz=spec["params"]["pepmass"][0],
-                precursor_charge=spec["params"].get("charge", [None])[0],
+                precursor_mz=pepmass[0],
+                precursor_charge=charge[0],
                 mz=spec["m/z array"],
                 intensity=spec["intensity array"],
             )
@@ -70,7 +68,7 @@ def parse_mztab_to_dataframe(mztab_file):
     return psm_df
 
 
-def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_metadata_csv_file_path, output_plot_path):
+def data_processing_for_coding_task(mgf_file_path, mztab_file_path, info_csv_file_path, output_plot_path):
 
     mgf_df = parse_mgf_to_dataframe(mgf_file_path)
     mztab_df = parse_mztab_to_dataframe(mztab_file_path)
@@ -143,12 +141,12 @@ def data_processing_for_coding_task(mgf_file_path, mztab_file_path, sequence_met
             **row_dict
         }
 
-        if not os.path.exists(sequence_metadata_csv_file_path):
-            with open(sequence_metadata_csv_file_path, mode='w', newline='') as f:
+        if not os.path.exists(info_csv_file_path):
+            with open(info_csv_file_path, mode='w', newline='') as f:
                 writer = csv.DictWriter(f, new_data.keys())
                 writer.writeheader()
 
-        with open(sequence_metadata_csv_file_path, mode='a', newline='') as f:
+        with open(info_csv_file_path, mode='a', newline='') as f:
             writer = csv.DictWriter(f, new_data.keys())
             writer.writerow(new_data)
             print(f"Added sequence with id {new_data['id']}")

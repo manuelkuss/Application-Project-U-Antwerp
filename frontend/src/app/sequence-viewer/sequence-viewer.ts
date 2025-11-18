@@ -25,7 +25,7 @@ export class SequenceViewer {
 
   selectedSequenceId: number | null = null;
   sequenceData: SequenceModel | null = null;
-  sequenceiPlotPath: string = environment.mediaUrl + "output_iplots/sequence_"
+  sequenceiPlotPath: string | null = null;
   columnKeys: (keyof SequenceModel)[] = ['id', 'title', 'sequence', 'PSH', 'PSM_ID', 'accession', 'unique', 'database', 'database_version', 'search_engine', 'search_engine_score_1', 'modifications', 'retention_time', 'charge_x', 'exp_mass_to_charge', 'calc_mass_to_charge', 'spectra_ref', 'pre', 'post', 'start', 'end', 'opt_ms_run_1_aa_scores', 'scan_number', 'pepmass', 'charge_y', 'scans', 'rtinseconds', 'seq', 'mz_array', 'intensity_array', 'charge_array'];
 
   errorMessage: string | null = null;
@@ -46,6 +46,7 @@ export class SequenceViewer {
         console.log('Fetched mgf files:', data);
         this.mgfFiles = data;
         this.mgfFileSelectedName = this.mgfFiles[0].name;
+        this.sequenceiPlotPath = environment.mediaUrl + "output_iplots/" + this.mgfFiles[0].name + "/sequence_"
         this.loadMgfFileInfo();
       },
       error: (err) => console.error('Error mgf files', err)
@@ -86,12 +87,13 @@ export class SequenceViewer {
       });
     }
   }
-  
+
   onMgfFileChange(selectedMgfFile: string): void {
     this.mgfFileSelectedName = String(selectedMgfFile);
+    this.sequenceiPlotPath = environment.mediaUrl + "output_iplots/" + String(selectedMgfFile) + "/sequence_"
 
     console.log("onMgfFileChange -> selected mgf file: ", this.mgfFileSelectedName);
-    
+
     this.loadMgfFileInfo();
   }
 
@@ -100,7 +102,7 @@ export class SequenceViewer {
     this.mgfFileSequences.forEach((seqModel: SequenceModel) => {
       if (seqModel.id == Number(selectedId)) {
         this.sequenceData = seqModel;
-        
+
         setTimeout(() => this.renderPlot(), 0);
       }
     });
@@ -112,22 +114,23 @@ export class SequenceViewer {
 
   renderPlot() {
 
-    var spec = this.sequenceiPlotPath + this.sequenceData?.id + '.json';
+    if (this.sequenceiPlotPath) {
+      var spec = this.sequenceiPlotPath + this.sequenceData?.id + '.json';
 
-    console.log("path: ", spec);
+      console.log("path: ", spec);
 
-    var opt = {
-      actions: true,
-      height: this.chartHeight,
-    };
+      var opt = {
+        actions: true,
+        height: this.chartHeight,
+      };
 
-    this.errorOccurred = false;
-    vegaEmbed('#vis', spec, opt)
-      .catch((err) => {
-        this.errorMessage = "Sequence json " + spec + " not found!";
-        this.errorOccurred = true;
-        console.log("test", err);
-      });
-
+      this.errorOccurred = false;
+      vegaEmbed('#vis', spec, opt)
+        .catch((err) => {
+          this.errorMessage = "Sequence json " + spec + " not found!";
+          this.errorOccurred = true;
+          console.log("test", err);
+        });
+    }
   }
 }

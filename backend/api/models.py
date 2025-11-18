@@ -11,6 +11,7 @@ class Note(models.Model):
 
 class MgfFile(models.Model):
     name = models.CharField(max_length=255)
+    casanovo_file_name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
