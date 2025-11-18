@@ -4,8 +4,8 @@
     <div class="row mb-4">
         <div class="col-md-6">
             <div class="form-floating">
-                <select id="mgfFileSelect" class="form-select" [(ngModel)]="mgfFileSelected">
-                    <option *ngFor="let mgfFile of mgfFiles" [value]="mgfFile">
+                <select id="mgfFileSelect" class="form-select" [(ngModel)]="mgfFileSelectedName" (ngModelChange)="onMgfFileChange($event)">
+                    <option *ngFor="let mgfFile of mgfFiles" [value]="mgfFile.name">
                         {{ mgfFile.name }}
                     </option>
                 </select>
@@ -14,9 +14,9 @@
 
         </div>
         <div class="col-md-6">
-            <div class="form-floating">
+            <div class="form-floating" *ngIf="sequenceData && !errorOccurred">
                 <select id="sequenceSelect" *ngIf="sequenceData" class="form-select" [(ngModel)]="selectedSequenceId"
-                    (ngModelChange)="onMgfFileChange($event)">
+                    (ngModelChange)="onSequenceChange($event)">
 
                     <option *ngFor="let mgfFileSequencesId of mgfFileSequencesIds" [value]="mgfFileSequencesId">
                         {{ mgfFileSequencesId }}

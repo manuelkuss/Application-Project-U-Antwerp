@@ -23,14 +23,15 @@ def mgf_file_get_info(request, name):
 
     print(mgf_info_file)
 
-    if not os.path.exists(mgf_info_file):
-        data_processing_for_coding_task(mgf_file_path="../resources/sample_preprocessed_spectra.mgf",
-                                        mztab_file_path="../resources/casanovo_20251029091517.mztab",
-                                        sequence_metadata_csv_file_path="assets/sample_preprocessed_spectra/sample_preprocessed_spectra_info.csv",
-                                        output_plot_path="media/output_iplots/")
-
-    if not os.path.exists(mgf_info_file):
-        return Response({'error': 'Csv file not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    try:
+        if not os.path.exists(mgf_info_file):
+            mgf_file_path = "../resources/" + ".mgf"
+            data_processing_for_coding_task(mgf_file_path=mgf_file_path,
+                                            mztab_file_path="../resources/casanovo_20251029091517.mztab",
+                                            sequence_metadata_csv_file_path="assets/sample_preprocessed_spectra/sample_preprocessed_spectra_info.csv",
+                                            output_plot_path="media/output_iplots/")
+    except Exception:
+        return Response({'error': 'CSV file does not exist and could not be generated.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     with open(mgf_info_file, mode='r', newline='') as f:
         info_csv_file = csv.DictReader(f)

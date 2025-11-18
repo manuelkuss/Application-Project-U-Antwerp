@@ -19,7 +19,7 @@ const CHART_HEIGHT = 300;
 })
 export class SequenceViewer {
   mgfFiles: MgfFile[] = [];
-  mgfFileSelected: MgfFile | undefined;
+  mgfFileSelectedName: string | undefined;
   mgfFileSequences: SequenceModel[] = [];
   mgfFileSequencesIds: number[] = [];
 
@@ -45,7 +45,7 @@ export class SequenceViewer {
       next: (data: MgfFile[]) => {
         console.log('Fetched mgf files:', data);
         this.mgfFiles = data;
-        this.mgfFileSelected = this.mgfFiles[0];
+        this.mgfFileSelectedName = this.mgfFiles[0].name;
         this.loadMgfFileInfo();
       },
       error: (err) => console.error('Error mgf files', err)
@@ -53,8 +53,9 @@ export class SequenceViewer {
   }
 
   loadMgfFileInfo(): void {
-    if (this.mgfFileSelected) {
-      this.sequenceViewerService.getMgfFileInfo(this.mgfFileSelected.name).subscribe({
+    console.log("loadMgfFileInfo: this.mgfFileSelectedName: ", this.mgfFileSelectedName);
+    if (this.mgfFileSelectedName) {
+      this.sequenceViewerService.getMgfFileInfo(this.mgfFileSelectedName).subscribe({
         next: (data: any) => {
           console.log("Fetchend mgf file info data: ", data);
           var sequencesList: SequenceModel[] = [];
@@ -79,14 +80,22 @@ export class SequenceViewer {
           setTimeout(() => this.renderPlot(), 0);
         },
         error: (err) => {
-          this.errorMessage = err;
+          this.errorMessage = "Information CSV file for this mgf file does not exist and could not be generated.";
           this.errorOccurred = true;
         }
       });
     }
   }
+  
+  onMgfFileChange(selectedMgfFile: string): void {
+    this.mgfFileSelectedName = String(selectedMgfFile);
 
-  onMgfFileChange(selectedId: string): void {
+    console.log("onMgfFileChange -> selected mgf file: ", this.mgfFileSelectedName);
+    
+    this.loadMgfFileInfo();
+  }
+
+  onSequenceChange(selectedId: string): void {
 
     this.mgfFileSequences.forEach((seqModel: SequenceModel) => {
       if (seqModel.id == Number(selectedId)) {
