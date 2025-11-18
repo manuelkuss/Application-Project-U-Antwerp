@@ -2,7 +2,9 @@
 
 Documentation see in `docs/documentation.md`.
 
-Screenshots from local running instance wee below.
+![](docs/ui-images/sequence-viewer.png)
+
+**More screenshots from local running instance see below.**
 
 ## Brief explanation of my approach:
 
@@ -88,7 +90,6 @@ Sequence Viewer page:
 
 ![](docs/ui-images/sequence-viewer-sequence-selection.png)
 
-![](docs/ui-images/sequence-viewer-chart-hover.png)
 
 Notes page: 
 
