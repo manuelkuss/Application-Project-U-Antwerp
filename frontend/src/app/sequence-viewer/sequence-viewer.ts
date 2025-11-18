@@ -8,6 +8,8 @@ import { SequenceModel } from '../models/sequence.model';
 import vegaEmbed from 'vega-embed';
 import { environment } from '../../environments/environment';
 
+const CHART_HEIGHT = 300;
+
 @Component({
   selector: 'app-sequence-viewer',
   imports: [CommonModule, HttpClientModule, FormsModule],
@@ -29,7 +31,7 @@ export class SequenceViewer {
   errorMessage: string | null = null;
   errorOccurred: boolean = false;
 
-  chartHeight: number = 100;
+  chartHeight: number = CHART_HEIGHT;
 
 
   constructor(private sequenceViewerService: SequenceViewerService) { }
