@@ -1,8 +1,10 @@
 {
   "scripts": {
-    "start:backend": "cd backend && ../venv/bin/python manage.py runserver",
+    "start:backend:unix": "cd backend && ../venv/bin/python manage.py runserver",
+    "start:backend:win": "cd backend && ..\\.venv\\Scripts\\python.exe manage.py runserver",
     "start:frontend": "cd frontend && ng serve",
-    "start": "npm-run-all --parallel start:backend start:frontend"
+    "start_linux": "npm-run-all --parallel start:backend:unix start:frontend",
+    "start_win": "npm-run-all --parallel start:backend:win start:frontend"
   },
   "dependencies": {
     "npm-run-all": "^4.1.5"

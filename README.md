@@ -23,13 +23,19 @@ The spectrum visualization happens as follows: The database stores known mgf fil
 
 ### Option 1 (with one command):
 
-Command: 
+**On Windows:**
 
 ```
-npm start
+npm run start_win
 ```
 
-Runs the start script defined in `package.json`: The backend and frontend servers are started in parallel.
+**On Linux:**
+
+```
+npm run start_linux
+```
+
+
 
 ### Option 2 (separate backend and frontend):
 
