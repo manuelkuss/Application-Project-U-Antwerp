@@ -42,7 +42,7 @@ Runs the start script defined in `package.json`: The backend and frontend server
 2. Start django backend:
 
     ```
-    cd visualizeDataProject
+    cd backend
     python manage.py runserver
     ```
 
@@ -62,14 +62,6 @@ Requirements:
 - Python 3.11
 - node v24.11.0
 
-### Install npm packages
-
-```
-npm install
-cd frontend
-npm install
-```
-
 ### Install python requirements
 
 Activate virtual environment:
@@ -82,6 +74,14 @@ Install required packages:
 
 ```
 pip install -r /path/to/requirements.txt
+```
+
+### Install npm packages
+
+```
+npm install
+cd frontend
+npm install
 ```
 
 # Screenshots from local running instance
